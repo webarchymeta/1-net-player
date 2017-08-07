@@ -42,12 +42,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/webarchymeta/playback"
+        "url": "https://github.com/webarchymeta/1-net-player"
     },
     "author": "Shuqian Ying, Mathias Buus (@mafintosh)",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/webarchymeta/playback/issues"
+        "url": "https://github.com/webarchymeta/1-net-player/issues"
     },
-    "homepage": "https://github.com/webarchymeta/playback.git"
+    "homepage": "https://github.com/webarchymeta/1-net-player.git"
 }
