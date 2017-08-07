@@ -16,11 +16,11 @@ const noop = () => {
 };
 
 module.exports = function() {
-    var that = new events.EventEmitter()
+    const that = new events.EventEmitter()
 
     that.entries = []
 
-    var onmagnet = function(link, cb) {
+    const onmagnet = function(link, cb) {
         console.log('torrent ' + link)
 
         var engine = torrents()
@@ -63,7 +63,7 @@ module.exports = function() {
         })
     }
 
-    var ontorrent = function(link, cb) {
+    const ontorrent = function(link, cb) {
         fs.readFile(link, function(err, buf) {
             if (err)
                 return cb(err);
@@ -72,18 +72,18 @@ module.exports = function() {
     };
 
     const setAgent = (opts) => {
-        if (process.env.SOCKS5_ADDRESS) {
+        if (global.__proxy && global.__proxy.socks5_address) {
             if (/^http:\/\//i.test(opts.url)) {
                 opts.agentClass = socks5_http_agent;
                 opts.agentOptions = {
-                    socksHost: process.env.SOCKS5_ADDRESS,
-                    socksPort: typeof process.env.SOCKS5_PORT === 'string' ? parseInt(process.env.SOCKS5_PORT) : process.env.SOCKS5_PORT
+                    socksHost: global.__proxy.socks5_address,
+                    socksPort: typeof global.__proxy.socks5_port === 'string' ? parseInt(global.__proxy.socks5_port) : global.__proxy.socks5_port
                 };
             } else if (/^https:\/\//i.test(opts.url)) {
                 opts.agentClass = socks5_https_agent;
                 opts.agentOptions = {
-                    socksHost: process.env.SOCKS5_ADDRESS,
-                    socksPort: typeof process.env.SOCKS5_PORT === 'string' ? parseInt(process.env.SOCKS5_PORT) : process.env.SOCKS5_PORT
+                    socksHost: global.__proxy.socks5_address,
+                    socksPort: typeof global.__proxy.socks5_port === 'string' ? parseInt(global.__proxy.socks5_port) : global.__proxy.socks5_port
                 };
             } else {
                 //other protocol handler, not impl yet
@@ -92,7 +92,7 @@ module.exports = function() {
         return opts;
     };
 
-    var onyoutube = function(link, cb) {
+    const onyoutube = function(link, cb) {
         var file = {}
         var url = /https?:/.test(link) ? link : 'https:' + link
 
@@ -173,7 +173,7 @@ module.exports = function() {
         }
     }
 
-    var onfile = function(link, cb) {
+    const onfile = function(link, cb) {
         var file = {}
 
         fs.stat(link, function(err, st) {
@@ -209,7 +209,7 @@ module.exports = function() {
         })
     }
 
-    var onhttplink = function(link, cb) {
+    const onhttplink = function(link, cb) {
         var file = {};
 
         file.name = link.lastIndexOf('/') > -1 ? link.split('/').pop() : link;
@@ -247,7 +247,7 @@ module.exports = function() {
         });
     };
 
-    var onipfslink = function(link, cb) {
+    const onipfslink = function(link, cb) {
         if (link[0] != '/') link = "/" + link // / may be stripped in add
 
         var local = 'localhost:8080' // todo: make this configurable

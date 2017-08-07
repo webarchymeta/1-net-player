@@ -8,7 +8,7 @@ const {
     } = remote,
     request = require('request'),
     drop = require('drag-and-drop-files'),
-    mdns = require('multicast-dns')(),
+    //mdns = require('multicast-dns')(),
     concat = require('concat-stream'),
     vtt = require('srt-to-vtt'),
     ipc = ipcRenderer,
@@ -655,6 +655,7 @@ server.listen(0, function() {
             list.add(file, printError);
     });
 
+    /*
     if (argv.follow) {
         mdns.on('response', function onresponse(response) {
             response.answers.forEach(function(a) {
@@ -714,6 +715,7 @@ server.listen(0, function() {
             })
         });
     }
+    */
 
     setTimeout(function() {
         ipc.send('ready')
