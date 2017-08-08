@@ -10,6 +10,7 @@ const {
     shell
 } = require('electron'),
     path = require('path'),
+    dns_client = require(__dirname + '/libs/dns-client'),
     app_register = require(__dirname + '/libs/app-register'),
     mainDbApi = require(__dirname + '/libs/main-db-api'),
     winStateUpdator = require(__dirname + '/libs/state-updator');
@@ -50,6 +51,21 @@ const onopen = function(e, lnk) {
 
 app.on('open-file', onopen);
 app.on('open-url', onopen);
+
+ipcMain.on('mdns-query', (e, q) => {
+    const dns = new dns_client();
+    dns.find(q.hostname, 'SRV').then(resp => {
+        e.sender.send('mdns-query-ack', {
+            ok: true,
+            response: resp
+        });
+    }).catch(err => {
+        e.sender.send('mdns-query-ack', {
+            ok: false,
+            error: err
+        });
+    });
+});
 
 const frame = process.platform === 'win32';
 
